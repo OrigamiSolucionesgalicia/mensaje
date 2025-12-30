@@ -306,34 +306,42 @@
         }
         
         .parrafo {
-            font-size: clamp(1rem, 2.5vw, 1.2rem);
-            line-height: 1.8;
-            margin-bottom: 25px;
+            font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+            line-height: 1.9;
+            margin-bottom: 28px;
             color: var(--color-texto);
             text-align: left;
+            letter-spacing: 0.3px;
         }
         
         .destacado {
-            color: var(--color-acento);
+            color: var(--color-acento-oscuro);
             font-weight: 600;
             position: relative;
             display: inline-block;
+            padding: 0 4px;
         }
         
-        .destacado::after {
+        .destacado::before {
             content: '';
             position: absolute;
-            bottom: -2px;
+            bottom: 2px;
             left: 0;
             width: 100%;
-            height: 1px;
-            background: var(--color-acento);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            height: 8px;
+            background: linear-gradient(90deg, 
+                rgba(96, 209, 88, 0.2) 0%, 
+                rgba(96, 209, 88, 0.15) 100%);
+            z-index: -1;
+            border-radius: 2px;
+            transition: all 0.3s ease;
         }
         
-        .destacado:hover::after {
-            transform: scaleX(1);
+        .destacado:hover::before {
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(96, 209, 88, 0.25) 0%, 
+                rgba(96, 209, 88, 0.2) 100%);
         }
         
         .grid-pensamientos {
@@ -344,19 +352,49 @@
         }
         
         .pensamiento {
-            background: linear-gradient(135deg, rgba(96, 209, 88, 0.08) 0%, rgba(96, 209, 88, 0.05) 100%);
-            border-left: 4px solid var(--color-acento);
-            padding: 25px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, 
+                rgba(96, 209, 88, 0.06) 0%, 
+                rgba(255, 255, 255, 0.5) 50%,
+                rgba(96, 209, 88, 0.04) 100%);
+            border-left: 5px solid var(--color-acento);
+            padding: 30px 28px;
+            border-radius: 15px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(96, 209, 88, 0.05);
+            box-shadow: 
+                0 4px 15px rgba(96, 209, 88, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pensamiento::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(96, 209, 88, 0.08) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .pensamiento:hover::before {
+            opacity: 1;
         }
         
         .pensamiento:hover {
-            background: linear-gradient(135deg, rgba(96, 209, 88, 0.15) 0%, rgba(96, 209, 88, 0.1) 100%);
-            transform: translateX(10px);
-            box-shadow: 0 6px 20px rgba(96, 209, 88, 0.12);
+            background: linear-gradient(135deg, 
+                rgba(96, 209, 88, 0.12) 0%, 
+                rgba(255, 255, 255, 0.6) 50%,
+                rgba(96, 209, 88, 0.08) 100%);
+            transform: translateX(12px) translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(96, 209, 88, 0.12),
+                0 2px 8px rgba(96, 209, 88, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 1);
+            border-left-color: var(--color-acento-oscuro);
         }
         
         .pensamiento h3 {
@@ -376,25 +414,77 @@
         .decoracion-inferior {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-top: 60px;
-            animation: aparecer 1s ease-out 1.2s backwards;
+            align-items: center;
+            gap: 12px;
+            margin-top: 70px;
+            animation: aparecer 1.2s ease-out 1.2s backwards;
+            position: relative;
+        }
+        
+        .decoracion-inferior::before,
+        .decoracion-inferior::after {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, var(--color-acento) 50%, transparent 100%);
         }
         
         .punto {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-acento) 0%, var(--color-acento-oscuro) 100%);
+            opacity: 0.7;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 2px 8px rgba(96, 209, 88, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+        
+        .punto::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             background: var(--color-acento);
-            opacity: 0.6;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 6px rgba(96, 209, 88, 0.3);
+            opacity: 0;
+            animation: ondas 3s ease-in-out infinite;
+        }
+        
+        .punto:nth-child(2)::before {
+            animation-delay: 1s;
+        }
+        
+        .punto:nth-child(3)::before {
+            animation-delay: 2s;
         }
         
         .punto:hover {
             opacity: 1;
-            transform: scale(1.5);
-            box-shadow: 0 3px 10px rgba(96, 209, 88, 0.5);
+            transform: scale(1.4);
+            box-shadow: 
+                0 4px 15px rgba(96, 209, 88, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+        
+        @keyframes ondas {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(2.5);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
         }
         
         .mensaje-secreto {
@@ -407,26 +497,42 @@
             animation: aparecer 1s ease-out 1.5s backwards;
         }
         
+        .logo-contenedor {
+            margin-top: 60px;
+            animation: aparecer 1.5s ease-out 1.5s backwards;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(248, 255, 248, 0.5) 0%, rgba(255, 255, 255, 0.3) 100%);
+            border-radius: 20px;
+            display: inline-block;
+            border: 1px solid rgba(96, 209, 88, 0.1);
+        }
+        
         .logo {
             max-width: 200px;
-            opacity: 0.8;
-            transition: all 0.3s ease;
+            opacity: 0.85;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             filter: none;
         }
         
         .logo:hover {
             opacity: 1;
-            transform: scale(1.05);
+            transform: scale(1.08) translateY(-3px);
+            filter: drop-shadow(0 8px 20px rgba(96, 209, 88, 0.15));
         }
         
         @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+            
             .container {
-                padding: 40px 25px;
-                border-radius: 20px;
+                padding: 50px 30px;
+                border-radius: 25px;
             }
             
             .contenido {
-                padding: 30px 20px;
+                padding: 40px 25px;
+                border-radius: 20px;
             }
             
             .grid-pensamientos {
@@ -435,6 +541,16 @@
             
             .logo {
                 max-width: 150px;
+            }
+            
+            h1::before,
+            h1::after {
+                display: none;
+            }
+            
+            .decoracion-inferior::before,
+            .decoracion-inferior::after {
+                width: 25px;
             }
         }
         
@@ -450,27 +566,34 @@
         
         .particula {
             position: absolute;
-            width: 3px;
-            height: 3px;
-            background: var(--color-acento);
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--color-acento) 0%, var(--color-acento-oscuro) 100%);
             border-radius: 50%;
             animation: flotar 20s infinite ease-in-out;
-            box-shadow: 0 0 8px rgba(96, 209, 88, 0.4);
+            box-shadow: 
+                0 0 10px rgba(96, 209, 88, 0.5),
+                0 0 20px rgba(96, 209, 88, 0.3);
+            opacity: 0.6;
         }
         
         @keyframes flotar {
             0%, 100% {
-                transform: translateY(0) translateX(0);
+                transform: translateY(0) translateX(0) scale(1);
                 opacity: 0;
             }
-            10% {
-                opacity: 1;
+            5% {
+                opacity: 0.6;
             }
-            90% {
-                opacity: 1;
+            50% {
+                transform: translateY(-50vh) translateX(30px) scale(1.2);
+                opacity: 0.8;
+            }
+            95% {
+                opacity: 0.6;
             }
             100% {
-                transform: translateY(-100vh) translateX(50px);
+                transform: translateY(-100vh) translateX(60px) scale(0.8);
                 opacity: 0;
             }
         }
@@ -557,12 +680,16 @@
         </div>
         
         <!-- Mensaje de Año Nuevo -->
-        <div class="mensaje-año-nuevo" style="margin-top: 40px; animation: aparecer 1s ease-out 1.8s backwards;">
-            <p style="font-family: 'Cormorant Garamond', serif; font-size: clamp(1.5rem, 4vw, 2rem); color: var(--color-acento-oscuro); font-weight: 600; margin-bottom: 10px;">
-                ¡Feliz 2026!
+        <div class="mensaje-año-nuevo" style="margin-top: 50px; animation: aparecer 1.5s ease-out 1.8s backwards; padding: 40px 30px; background: linear-gradient(135deg, rgba(96, 209, 88, 0.04) 0%, rgba(255, 255, 255, 0.8) 100%); border-radius: 20px; border: 2px solid rgba(96, 209, 88, 0.15); position: relative; overflow: hidden;">
+            <div style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(96, 209, 88, 0.08) 0%, transparent 70%); border-radius: 50%;"></div>
+            <div style="position: absolute; bottom: -30px; left: -30px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(32, 69, 29, 0.05) 0%, transparent 70%); border-radius: 50%;"></div>
+            <p style="font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 2.8rem); color: var(--color-acento-oscuro); font-weight: 600; margin-bottom: 15px; letter-spacing: 3px; position: relative; z-index: 1;">
+                ✦ ¡Feliz 2026! ✦
             </p>
-            <p style="font-size: clamp(0.9rem, 2vw, 1.1rem); color: var(--color-acento-oscuro); opacity: 0.9;">
-                Del equipo de <span style="font-weight: 600;">Origami Soluciones</span>
+            <p style="font-size: clamp(1rem, 2.5vw, 1.2rem); color: var(--color-acento-oscuro); opacity: 0.85; letter-spacing: 1px; position: relative; z-index: 1;">
+                Del equipo de <span style="font-weight: 700; position: relative; display: inline-block;">Origami Soluciones
+                <span style="position: absolute; bottom: -3px; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, var(--color-acento) 0%, var(--color-acento-oscuro) 100%);"></span>
+                </span>
             </p>
         </div>
         
