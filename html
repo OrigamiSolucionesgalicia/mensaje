@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Reflexiones sobre el paso del tiempo - Una experiencia interactiva">
+    <meta name="author" content="Origami Soluciones">
+    <title>Reflexiones del Tiempo</title>
+    
+    <!-- Si pudiera borrar este año, lo haría? -->
+    <!-- ¡FELIZ 2026 del equipo de Origami Soluciones! -->
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Si pudiera borrar este año */
+            --color-principal: #ffffff;
+            --color-secundario: #f8f9fa;
+            /* lo haría? */
+            --color-acento: #60d158;
+            --color-acento-oscuro: #20451d;
+            --color-texto: #2c3e50;
+            --color-texto-suave: #5a6c7d;
+            --color-borde: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #ffffff 50%, #f8f9fa 100%);
+            color: var(--color-texto);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(96, 209, 88, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(32, 69, 29, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(96, 209, 88, 0.03) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 900px;
+            padding: 60px 50px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            background: #ffffff;
+            border-radius: 30px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.12),
+                0 10px 30px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(96, 209, 88, 0.2);
+        }
+        
+        .decoracion-superior {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-acento) 0%, var(--color-acento-oscuro) 100%);
+            margin: 0 auto 40px;
+            animation: expandir 1.5s ease-out;
+            border-radius: 2px;
+            box-shadow: 0 2px 8px rgba(96, 209, 88, 0.3);
+        }
+        
+        @keyframes expandir {
+            from {
+                width: 0;
+                opacity: 0;
+            }
+            to {
+                width: 60px;
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+            animation: aparecer 1s ease-out 0.3s backwards;
+            color: var(--color-acento-oscuro);
+            text-shadow: 0 2px 20px rgba(96, 209, 88, 0.15);
+        }
+        
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .subtitulo {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            color: var(--color-texto-suave);
+            font-weight: 300;
+            margin-bottom: 50px;
+            font-style: italic;
+            animation: aparecer 1s ease-out 0.6s backwards;
+        }
+        
+        .contenido {
+            background: linear-gradient(135deg, #f8fff8 0%, #ffffff 100%);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(96, 209, 88, 0.15);
+            border-radius: 20px;
+            padding: 50px;
+            margin: 50px 0;
+            animation: aparecer 1s ease-out 0.9s backwards;
+            box-shadow: 0 8px 25px rgba(96, 209, 88, 0.08);
+        }
+        
+        .parrafo {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: var(--color-texto);
+            text-align: left;
+        }
+        
+        .destacado {
+            color: var(--color-acento);
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .destacado::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--color-acento);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .destacado:hover::after {
+            transform: scaleX(1);
+        }
+        
+        .grid-pensamientos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .pensamiento {
+            background: linear-gradient(135deg, rgba(96, 209, 88, 0.08) 0%, rgba(96, 209, 88, 0.05) 100%);
+            border-left: 4px solid var(--color-acento);
+            padding: 25px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(96, 209, 88, 0.05);
+        }
+        
+        .pensamiento:hover {
+            background: linear-gradient(135deg, rgba(96, 209, 88, 0.15) 0%, rgba(96, 209, 88, 0.1) 100%);
+            transform: translateX(10px);
+            box-shadow: 0 6px 20px rgba(96, 209, 88, 0.12);
+        }
+        
+        .pensamiento h3 {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            margin-bottom: 15px;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            color: var(--color-acento-oscuro);
+        }
+        
+        .pensamiento p {
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            color: var(--color-texto-suave);
+            line-height: 1.6;
+        }
+        
+        .decoracion-inferior {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 60px;
+            animation: aparecer 1s ease-out 1.2s backwards;
+        }
+        
+        .punto {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-acento);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(96, 209, 88, 0.3);
+        }
+        
+        .punto:hover {
+            opacity: 1;
+            transform: scale(1.5);
+            box-shadow: 0 3px 10px rgba(96, 209, 88, 0.5);
+        }
+        
+        .mensaje-secreto {
+            display: none;
+            /* Si pudiera borrar este año, lo haría? */
+        }
+        
+        .logo-contenedor {
+            margin-top: 60px;
+            animation: aparecer 1s ease-out 1.5s backwards;
+        }
+        
+        .logo {
+            max-width: 200px;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            filter: none;
+        }
+        
+        .logo:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 25px;
+                border-radius: 20px;
+            }
+            
+            .contenido {
+                padding: 30px 20px;
+            }
+            
+            .grid-pensamientos {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                max-width: 150px;
+            }
+        }
+        
+        .particulas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particula {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--color-acento);
+            border-radius: 50%;
+            animation: flotar 20s infinite ease-in-out;
+            box-shadow: 0 0 8px rgba(96, 209, 88, 0.4);
+        }
+        
+        @keyframes flotar {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body data-mensaje="Si pudiera borrar este año, lo haría?" data-año-nuevo="Feliz 2026 - Origami Soluciones">
+    
+    <!-- Partículas decorativas -->
+    <div class="particulas" data-secreto="Si">
+        <div class="particula" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particula" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particula" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="particula" style="left: 40%; animation-delay: 6s;"></div>
+        <div class="particula" style="left: 50%; animation-delay: 8s;"></div>
+        <div class="particula" style="left: 60%; animation-delay: 10s;"></div>
+        <div class="particula" style="left: 70%; animation-delay: 12s;"></div>
+        <div class="particula" style="left: 80%; animation-delay: 14s;"></div>
+        <div class="particula" style="left: 90%; animation-delay: 16s;"></div>
+    </div>
+    
+    <div class="container">
+        <div class="decoracion-superior"></div>
+        
+        <!-- pudiera -->
+        <h1 data-reflexion="borrar">El Paso del Tiempo</h1>
+        
+        <p class="subtitulo" data-pensamiento="este año">
+            Reflexiones sobre momentos que quedaron atrás
+        </p>
+        
+        <!-- lo haría? -->
+        <div class="contenido" id="contenido-principal">
+            <p class="parrafo">
+                Cada año lleva consigo una colección de momentos: 
+                <span class="destacado">alegrías</span>, 
+                <span class="destacado">tristezas</span>, 
+                <span class="destacado">aprendizajes</span> y 
+                <span class="destacado">despedidas</span>.
+            </p>
+            
+            <p class="parrafo">
+                Algunos años son como páginas que quisiéramos releer una y otra vez. 
+                Otros son capítulos que preferimos <em>dejar atrás</em>, páginas que tal vez 
+                nos gustaría reescribir o simplemente... <em>pasar de largo</em>.
+            </p>
+            
+            <div class="grid-pensamientos" data-oculto="Si pudiera">
+                <div class="pensamiento" data-palabra="borrar">
+                    <h3>Recuerdos</h3>
+                    <p>Las memorias que nos construyen, incluso aquellas que preferiríamos olvidar.</p>
+                </div>
+                
+                <div class="pensamiento" data-palabra="este">
+                    <h3>Cambios</h3>
+                    <p>Las transformaciones que nos desafían y nos moldean en el proceso.</p>
+                </div>
+                
+                <div class="pensamiento" data-palabra="año">
+                    <h3>Pérdidas</h3>
+                    <p>Aquello que dejamos ir, a veces sin querer, a veces por necesidad.</p>
+                </div>
+            </div>
+            
+            <p class="parrafo">
+                Pero quizás, cada experiencia, por dolorosa que sea, nos enseña algo valioso. 
+                Y aunque a veces deseemos poder <span class="destacado">borrar</span> ciertos momentos, 
+                son precisamente esos los que nos hacen <em>crecer</em> y <em>valorar</em> lo que vendrá.
+            </p>
+        </div>
+        
+        <div class="decoracion-inferior">
+            <div class="punto"></div>
+            <div class="punto"></div>
+            <div class="punto"></div>
+        </div>
+        
+        <!-- Logo de Origami Soluciones -->
+        <div class="logo-contenedor">
+            <img src="https://origamisoluciones.com/theme/images/graphic-os-black.png" 
+                 alt="Origami Soluciones" 
+                 class="logo">
+        </div>
+        
+        <!-- Mensaje de Año Nuevo -->
+        <div class="mensaje-año-nuevo" style="margin-top: 40px; animation: aparecer 1s ease-out 1.8s backwards;">
+            <p style="font-family: 'Cormorant Garamond', serif; font-size: clamp(1.5rem, 4vw, 2rem); color: var(--color-acento); font-weight: 400; margin-bottom: 10px;">
+                ¡Feliz 2026!
+            </p>
+            <p style="font-size: clamp(0.9rem, 2vw, 1.1rem); color: #ffffff; opacity: 0.9;">
+                Del equipo de <span style="color: var(--color-acento); font-weight: 600;">Origami Soluciones</span>
+            </p>
+        </div>
+        
+        <!-- Mensaje completamente oculto -->
+        <div class="mensaje-secreto" id="secreto" data-verdad="lo haría?">
+            Si pudiera borrar este año, lo haría?
+        </div>
+    </div>
+    
+    <script>
+        // Si pudiera borrar este año, lo haría?
+        
+        console.log('%c¿Buscando algo?', 'font-size: 20px; color: #20451d; font-weight: bold;');
+        console.log('%cSi pudiera borrar este año, lo haría?', 'font-size: 16px; color: #5a6c7d; font-style: italic;');
+        
+        // Efecto de hover en los pensamientos
+        const pensamientos = document.querySelectorAll('.pensamiento');
+        
+        pensamientos.forEach(pensamiento => {
+            pensamiento.addEventListener('click', function() {
+                this.style.background = 'rgba(96, 209, 88, 0.25)';
+                setTimeout(() => {
+                    this.style.background = 'rgba(96, 209, 88, 0.1)';
+                }, 300);
+            });
+        });
+        
+        // Agregar más partículas dinámicamente
+        function crearParticula() {
+            const particulas = document.querySelector('.particulas');
+            if (!particulas) return;
+            
+            const particula = document.createElement('div');
+            particula.className = 'particula';
+            particula.style.left = Math.random() * 100 + '%';
+            particula.style.animationDelay = Math.random() * 10 + 's';
+            particulas.appendChild(particula);
+            
+            setTimeout(() => {
+                particula.remove();
+            }, 20000);
+        }
+        
+        setInterval(crearParticula, 3000);
+        
+        // Mensaje oculto en la consola después de 5 segundos
+        setTimeout(() => {
+            console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #60d158;');
+            console.log('%cAlgunas preguntas no tienen respuesta...', 'color: #5a6c7d;');
+            console.log('%cPero están ahí, en el código, esperando ser descubiertas.', 'color: #5a6c7d;');
+            console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #60d158;');
+        }, 5000);
+        
+        // Mensaje especial de Año Nuevo después de 10 segundos
+        setTimeout(() => {
+            console.log('%c🎊 ¡FELIZ 2026! 🎊', 'font-size: 24px; color: #20451d; font-weight: bold; text-shadow: 2px 2px 4px rgba(96, 209, 88, 0.3);');
+            console.log('%cQue este nuevo año traiga nuevos códigos, nuevas soluciones y nuevas historias.', 'font-size: 14px; color: #5a6c7d; font-style: italic;');
+            console.log('%c- Con cariño, el equipo de Origami Soluciones 💚', 'font-size: 14px; color: #60d158; font-weight: bold;');
+        }, 10000);
+    </script>
+</body>
+</html>
